@@ -4,7 +4,7 @@
 import random
 
 
-def find_two_minimals(values):
+def find_minimals(values):
 
     min_val = values[0]
     position = 0
@@ -15,7 +15,7 @@ def find_two_minimals(values):
             min_val = i
             position = n
     min_val_array.append(values.pop(position))
-    find_two_minimals(values)
+    find_minimals(values)
     return min_val_array
 
 
@@ -26,4 +26,4 @@ for _ in range(0, 10):
 # array = [1, 2, 3, 1]
 # ----------------------------------------
 min_val_array = []
-print(f'Массив: {array}\nНаименьшие элементы массива: {find_two_minimals(array)}')
+print(f'Массив: {array}\nНаименьшие элементы массива: {find_minimals(array)}')
