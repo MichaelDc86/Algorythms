@@ -9,7 +9,7 @@ import random
 
 array = []
 for _ in range(0, 10):
-    array.append(random.randint(-99, 100))
+    array.append(random.randint(-99, 99))
 # print(array)
 
 # ищем макс отрицательное-----------------

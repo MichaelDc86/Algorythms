@@ -22,7 +22,7 @@ def find_minimals(values):
 # создаем массив--------------------------
 array = []
 for _ in range(0, 10):
-    array.append(random.randint(-100, 100))
+    array.append(random.randint(-99, 99))
 # array = [1, 2, 3, 1]
 # ----------------------------------------
 min_val_array = []
