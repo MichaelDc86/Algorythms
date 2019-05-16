@@ -21,12 +21,13 @@ def val_modify(val):
     mult_num = 0
     mult_dict = {x: 16**x for x in range(7)}
     # mult_dict = {0: 1, 1: 16, 2: 256}
-    val = deque(val)
+    val = deque(val.upper())
     val.reverse()
     for i, j in enumerate(val):
         mult_num += (numbers(j)) * mult_dict[i]
     return mult_num
 
 
-print(fill())
-print(val_modify(['A', 'B', 'C']))
+# print(fill())
+# print(val_modify(['A', 'B', 'C']))
+print(val_modify('abcdf'))
