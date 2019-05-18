@@ -41,7 +41,7 @@ def count(prep_dict):
             mid_tmp_val = sum(prep_dict[k])/4
             if mid_tmp_val > middle_val:
                 higher_names.append(k)
-            else:
+            if mid_tmp_val < middle_val:
                 lower_names.append(k)
 
         print(f'Словарь всех фирм: {prep_dict}\n'
