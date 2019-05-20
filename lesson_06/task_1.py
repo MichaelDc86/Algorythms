@@ -15,6 +15,7 @@ def show_size(x, level=0):
                 memo_val += show_size(key, level + 1)[0]
                 memo_val += show_size(value, level + 1)[0]
         elif not isinstance(x, str):
+            print(sys.getrefcount(x))
             for item in x:
                 memo_val += show_size(item, level + 1)[0]
 
@@ -58,7 +59,12 @@ def main():
     min_val_array = []
     for_memo_count, answer = find_minimals(array, min_val_array)
     print(f'Массив: {array}\nНаименьшие элементы массива: {answer}')
-    print(locals())
+
+    # на случай, если array и min_val_array считаются по 2 раза
+    # locals().pop('array')
+    # locals().pop('min_val_array')
+    # print(locals())
+
     return locals()
 
 
