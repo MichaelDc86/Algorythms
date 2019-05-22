@@ -33,9 +33,8 @@ def show_size_decor(func):
             # print(*args)
             print(func.__name__)
             values, min_val_array = args[0], args[1]
-            if len(min_val_array) != 0:
-                pass
-            vars_dict = func(values, min_val_array)
+            if len(values) != 10:
+                vars_dict = func(values, min_val_array)
         print(vars_dict)
         print(type(vars_dict))
         # memo_vol = 0
