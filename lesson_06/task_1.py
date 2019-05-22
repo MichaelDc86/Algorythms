@@ -15,7 +15,6 @@ def show_size(x, level=0):
                 memo_val += show_size(key, level + 1)[0]
                 memo_val += show_size(value, level + 1)[0]
         elif not isinstance(x, str):
-            print(sys.getrefcount(x))
             for item in x:
                 memo_val += show_size(item, level + 1)[0]
 
@@ -23,21 +22,34 @@ def show_size(x, level=0):
 
 
 def show_size_decor(func):
-    def wrapper():
-        vars_dict = func()
+    # print(func.__code__.)
 
-        memo_vol = 0
-        for key in vars_dict:
-            key = vars_dict.get(key)
-            memo_vol += show_size(key)[1]
-        print(f'Функция {func.__name__} затратила {memo_vol} байт памяти на переменные')
+    def wrapper(*args, **kwargs):
+
+        if len(args) == 0:
+            vars_dict = func()
+        else:
+            # print(args)
+            # print(*args)
+            print(func.__name__)
+            values, min_val_array = args[0], args[1]
+            if len(min_val_array) != 0:
+                pass
+            vars_dict = func(values, min_val_array)
+        print(vars_dict)
+        print(type(vars_dict))
+        # memo_vol = 0
+        # for key in vars_dict:
+        #     key = vars_dict.get(key)
+        #     memo_vol += show_size(key)[1]
+        # print(f'Функция {func.__name__} затратила {memo_vol} байт памяти на переменные')
 
     return wrapper
 
 
+@show_size_decor
 def find_minimals(values, min_val_array):
 
-    values = values.copy()
     min_val = values[0]
     position = 0
     if len(min_val_array) == 2:
@@ -57,69 +69,28 @@ def main():
     for _ in range(0, 10):
         array.append(random.randint(-99, 99))
     min_val_array = []
-    for_memo_count, answer = find_minimals(array, min_val_array)
-    print(f'Массив: {array}\nНаименьшие элементы массива: {answer}')
-
-    # на случай, если array и min_val_array считаются по 2 раза
-    # locals().pop('array')
-    # locals().pop('min_val_array')
-    # print(locals())
-
+    print(f'Массив: {array}\nНаименьшие элементы массива: {find_minimals(array, min_val_array)[1]}')
     return locals()
 
 
 main()
+# print(main.__code__.)
+# print(main.__getattr__('_'))
+# print(main().keys())
+# print(main().get('_'))
+# print(main.__dir__())
+# print(main.__get__())
 
 
-# --------------------------------------------------------Результаты-------------------------------------------------------
-# 64 - разрядная ubuntu
-# Python 3.6.7
+# d = [i for i in range(10)]
+# show_size(d)
+# print(show_size(d)[1])
+# find_minimals.
+# v = 'Hallo!'
+# show_size(v)
+# f = {q: j for q in range(4) for j in range(3)}
+# show_size(f)
 
-# Результат
 
-# Массив: [21, 13, 78, 18, -77, 65, -7, 30, 27, 63]
-# Наименьшие элементы массива: [-77, -7]
-# {'array': [21, 13, 78, 18, -77, 65, -7, 30, 27, 63], '_': 9, 'min_val_array': [-77, -7], 'for_memo_count': {'values': [21, 13, 78, 18, 65, -7, 30, 27, 63], 'min_val_array': [-77, -7], 'min_val': -77, 'position': 4, 'n': 9, 'i': 63}, 'answer': [-77, -7]}
-#  type=<class 'list'>, size=192, obj=[21, 13, 78, 18, -77, 65, -7, 30, 27, 63]
-# 	 type=<class 'int'>, size=28, obj=21
-# 	 type=<class 'int'>, size=28, obj=13
-# 	 type=<class 'int'>, size=28, obj=78
-# 	 type=<class 'int'>, size=28, obj=18
-# 	 type=<class 'int'>, size=28, obj=-77
-# 	 type=<class 'int'>, size=28, obj=65
-# 	 type=<class 'int'>, size=28, obj=-7
-# 	 type=<class 'int'>, size=28, obj=30
-# 	 type=<class 'int'>, size=28, obj=27
-# 	 type=<class 'int'>, size=28, obj=63
-#  type=<class 'int'>, size=28, obj=9
-#  type=<class 'list'>, size=96, obj=[-77, -7]
-# 	 type=<class 'int'>, size=28, obj=-77
-# 	 type=<class 'int'>, size=28, obj=-7
-#  type=<class 'dict'>, size=368, obj={'values': [21, 13, 78, 18, 65, -7, 30, 27, 63], 'min_val_array': [-77, -7], 'min_val': -77, 'position': 4, 'n': 9, 'i': 63}
-# 	 type=<class 'str'>, size=55, obj=values
-# 	 type=<class 'list'>, size=144, obj=[21, 13, 78, 18, 65, -7, 30, 27, 63]
-# 		 type=<class 'int'>, size=28, obj=21
-# 		 type=<class 'int'>, size=28, obj=13
-# 		 type=<class 'int'>, size=28, obj=78
-# 		 type=<class 'int'>, size=28, obj=18
-# 		 type=<class 'int'>, size=28, obj=65
-# 		 type=<class 'int'>, size=28, obj=-7
-# 		 type=<class 'int'>, size=28, obj=30
-# 		 type=<class 'int'>, size=28, obj=27
-# 		 type=<class 'int'>, size=28, obj=63
-# 	 type=<class 'str'>, size=62, obj=min_val_array
-# 	 type=<class 'list'>, size=96, obj=[-77, -7]
-# 		 type=<class 'int'>, size=28, obj=-77
-# 		 type=<class 'int'>, size=28, obj=-7
-# 	 type=<class 'str'>, size=56, obj=min_val
-# 	 type=<class 'int'>, size=28, obj=-77
-# 	 type=<class 'str'>, size=57, obj=position
-# 	 type=<class 'int'>, size=28, obj=4
-# 	 type=<class 'str'>, size=50, obj=n
-# 	 type=<class 'int'>, size=28, obj=9
-# 	 type=<class 'str'>, size=50, obj=i
-# 	 type=<class 'int'>, size=28, obj=63
-#  type=<class 'list'>, size=96, obj=[-77, -7]
-# 	 type=<class 'int'>, size=28, obj=-77
-# 	 type=<class 'int'>, size=28, obj=-7
-# Функция main затратила 1854 байт памяти на переменные
+# 64 - разрядная windows7
+# Python 3.6.5
