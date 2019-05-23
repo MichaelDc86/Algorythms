@@ -16,7 +16,8 @@ SIZE = 2 * n + 1
 # SIZE = 7
 
 array = [random.randint(-100, 101) for i in range(SIZE)]
-# array = [56, -52, 100, -38, -38]
+# array = [56, -52, 100, -38, -38, -38, -38]
+# array = [1, 1, 2, 2, 2, 1, 2, 2, 1]
 
 
 def median(arr):
@@ -30,10 +31,16 @@ def median(arr):
         u = []
 
         for i in arr_inside:
-            if i <= m:
+            if i < m:
                 d.append(i)
             if i > m:
                 u.append(i)
+            if i == m:
+                if len(d) <= len(u):
+                    d.append(i)
+                else:
+                    u.append(i)
+
         return d, u
 
     while len(left) != len(right):
