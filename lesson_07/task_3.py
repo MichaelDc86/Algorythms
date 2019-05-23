@@ -10,13 +10,13 @@
 import random
 from collections import deque
 
-# n = int(input('Введите натуральное число: '))
+n = int(input('Введите натуральное число: '))
 
-# SIZE = 2 * n + 1
-SIZE = 7
+SIZE = 2 * n + 1
+# SIZE = 7
 
-# array = [random.randint(-100, 101) for i in range(SIZE)]
-array = [56, -52, 100, -38, -38]
+array = [random.randint(-100, 101) for i in range(SIZE)]
+# array = [56, -52, 100, -38, -38]
 
 
 def median(arr):
@@ -32,7 +32,7 @@ def median(arr):
         for i in arr_inside:
             if i <= m:
                 d.append(i)
-            if i >= m:
+            if i > m:
                 u.append(i)
         return d, u
 
