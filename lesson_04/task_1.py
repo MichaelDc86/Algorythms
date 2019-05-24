@@ -1,41 +1,90 @@
-# Пользователь вводит данные о количестве предприятий,
-# их наименования и прибыль за 4 квартал (т.е. 4 числа) для каждого предприятия.
-#  Программа должна определить среднюю прибыль (за год для всех предприятий)
-#  и отдельно вывести наименования предприятий, чья прибыль выше среднего и ниже среднего.
+# В одномерном массиве целых чисел определить два наименьших элемента.
+# Они могут быть как равны между собой (оба являться минимальными), так и различаться.
 
-from collections import Counter
-from collections import defaultdict
+# Вариант с использованием рекурсии для поиска минимальных элементов
 
-
-def inpt():
-    firms_quantity = input('Введите количество(целое число) предприятий: ')
-    firms_dict = defaultdict(list)
-
-    for i in range(int(firms_quantity)):
-        firms_income = []
-        firm_name = input(f'Введите название предприятия № {i+1}: ')
-        for j in range(1, 5):
-            income = input(f'Введите прибыль предприятия № {i+1} за {j} квартал: ')
-            firms_income.append(int(income))
-        firms_dict[firm_name] = firms_income
-    return firms_dict
+import random
+# import timeit
+import cProfile
 
 
-prep_dict = inpt()
-summa = 0
-for k in prep_dict:
-    summa += sum(prep_dict[k])
+def find_minimals(values):
 
-middle_val = summa/len(prep_dict)
-lower_names = []
-higher_names = []
-for k in prep_dict:
-    mid_tmp_val = sum(prep_dict[k])/4
-    if mid_tmp_val > middle_val:
-        higher_names.append(k)
-    else:
-        lower_names.append(k)
+    min_val = values[0]
+    position = 0
+    if len(min_val_array) == 2:
+        return None
+    for n, i in enumerate(values):
+        if i <= min_val:
+            min_val = i
+            position = n
+    min_val_array.append(values.pop(position))
+    find_minimals(values)
+    return min_val_array
 
-print(f'{prep_dict}\n{middle_val}\n{lower_names}\n{higher_names}')
 
-# print(prep_dict)
+# создаем массив--------------------------
+def fill_in_array():
+    array_ = []
+    for _ in range(1000):
+        array_.append(random.randint(-99, 99))
+    return array_
+# ----------------------------------------
+
+
+min_val_array = []
+
+
+def main():
+    array = fill_in_array()
+    # print_array = array.copy()
+    minimals = find_minimals(array)
+    # print(f'Массив: {print_array}\nНаименьшие элементы массива: {minimals}')
+
+
+# main()
+# rez = """main()"""
+# print(timeit.timeit(rez, number=100, globals=globals()))
+
+# Результаты замеров---------------------------------------------
+
+# длина массива - 1000
+# python3 -m timeit -n 1000 -s "import task_1" "task_1.main()"
+# 1000 loops, best of 3: 771 usec per loop
+
+# --------------------------------------
+
+# длина массива - 2000
+# python3 -m timeit -n 1000 -s "import task_1" "task_1.main()"
+# 1000 loops, best of 3: 1.54 msec per loop
+
+# ---------------------------------------
+# длина массива - 4000
+# python3 -m timeit -n 1000 -s "import task_1" "task_1.main()"
+# 1000 loops, best of 3: 3.07 msec per loop
+
+# длина массива - 10000
+# python3 -m timeit -n 1000 -s "import task_1" "task_1.main()"
+# 1000 loops, best of 3: 7.81 msec per loop
+
+# По результатам 3 первых замеров делаю вывод, что алгоритм обладает асимптотикой О(n)
+# Основное время тартится на заполнение массива.
+
+# cProfile.run('main()')
+
+# длина массива - 1000
+# 3/1    0.000    0.000    0.000    0.000 task_1.py:11(find_minimals)
+# 1      0.003    0.003    0.011    0.011 task_1.py:27(fill_in_array)
+# 1      0.000    0.000    0.012    0.012 task_1.py:39(main)
+# длина массива - 2000
+# 3/1    0.000    0.000    0.000    0.000 task_1.py:11(find_minimals)
+# 1      0.005    0.005    0.021    0.021 task_1.py:27(fill_in_array)
+# 1      0.000    0.000    0.022    0.022 task_1.py:39(main)
+# длина массива - 4000
+# 3/1    0.001    0.000    0.001    0.001 task_1.py:11(find_minimals)
+# 1      0.006    0.006    0.027    0.027 task_1.py:27(fill_in_array)
+# 1      0.000    0.000    0.027    0.027 task_1.py:39(main)
+# длина массива - 10000
+# 3/1    0.002    0.001    0.002    0.002 task_1.py:11(find_minimals)
+# 1      0.014    0.014    0.066    0.066 task_1.py:27(fill_in_array)
+# 1      0.000    0.000    0.068    0.068 task_1.py:39(main)

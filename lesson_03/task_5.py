@@ -9,15 +9,15 @@ import random
 
 array = []
 for _ in range(0, 10):
-    array.append(random.randint(-99, 100))
+    array.append(random.randint(-99, 99))
 # print(array)
 
 # ищем макс отрицательное-----------------
 
-max_negative = 0
+max_negative = array[0]
 position = 0
 for n, j in enumerate(array):
-    if j < 0 and abs(j) > abs(max_negative):
+    if j < 0 and abs(j) < abs(max_negative):
         max_negative = j
         position = n
 print(f'Массив: {array}\nМаксимальное отрицательное число: {max_negative}\nоно занимает {position} позицию')
