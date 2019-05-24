@@ -53,9 +53,7 @@ def sum_vals(a, b):
                 rez.append(tmp_rez)
             else:
                 tmp_rez = sum_matrix[numbers(tmp_summ_tmp)][numbers(b[i])]
-                if len(str(tmp_rez)) == 2:
-                    in_memo += 1
-                    rez.append(list(str(tmp_rez))[1])
+                rez.append(tmp_rez)
         else:
             tmp_summ = sum_matrix[numbers(a[i])][numbers(b[i])]
             if len(str(tmp_summ)) == 2:
