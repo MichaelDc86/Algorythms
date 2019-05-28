@@ -3,6 +3,7 @@
 from collections import Counter
 
 inp_string = 'Haffman Algorithm'
+# inp_string = 'aaaaaafqqwertyuiop'
 
 
 class HaffmanTree:
@@ -12,35 +13,38 @@ class HaffmanTree:
         self.left = left
         self.value = value
 
+    def print_tree(self):
+        print(f'  {str(self.value)}\n  /\t\\\n{self.left}\t{self.right}')
+
 
 def haffman(string):
 
     letter_mult = sorted(Counter(string).items(),  key=lambda pair: pair[1], reverse=False)
-    print(letter_mult)
-    print(len(letter_mult))
+    print(f'Исходный отсортированный массив:\n{letter_mult}')
+    print(f'Длина исходного отсортированного массива:{len(letter_mult)}')
 
     def fill_the_tree(array):
 
-        def insert_tree(arr, vl, tr):
+        def insert_tree_(arr, vl, tr):
             ins = False
             for j in range(len(arr)):
                 if type(arr[j]) == HaffmanTree:
-                    if arr[j].value <= vl:
-                        arr.insert(j - 1, tr)
+                    if arr[j].value == vl:
+                        arr.insert(j, tr)
                         ins = True
                         break
                 else:
-                    if arr[j][1] <= vl:
-                        arr.insert(j - 1, tr)
+                    if arr[j][1] == vl:
+                        arr.insert(j, tr)
                         ins = True
                         break
             if not ins:
                 arr.append(tr)
 
-        def delete_counted(arr):
+        def delete_counted_(arr):
             if len(arr) > 2:
                 arr.remove(array[0])
-                arr.remove(array[1])
+                arr.remove(array[0])
 
         if len(array) == 1:
             return array
@@ -50,105 +54,96 @@ def haffman(string):
             lft = array[0]
             rght = array[1]
             tmp_tree = HaffmanTree(val, lft, rght)
-            insert_tree(array, val, tmp_tree)
-            delete_counted(array)
+            insert_tree_(array, val, tmp_tree)
+            delete_counted_(array)
 
         elif type(array[0]) == HaffmanTree and type(array[1]) == tuple:
             val = array[0].value + array[1][1]
             lft = array[0]
             rght = array[1][0]
             tmp_tree = HaffmanTree(val, lft, rght)
-            insert_tree(array, val, tmp_tree)
-            delete_counted(array)
+            insert_tree_(array, val, tmp_tree)
+            delete_counted_(array)
 
         elif type(array[0]) == tuple and type(array[1]) == HaffmanTree:
             val = array[0][1] + array[1].value
             lft = array[0][0]
             rght = array[1]
             tmp_tree = HaffmanTree(val, lft, rght)
-            insert_tree(array, val, tmp_tree)
-            delete_counted(array)
+            insert_tree_(array, val, tmp_tree)
+            delete_counted_(array)
 
         else:
             val = array[0][1] + array[1][1]
             lft = array[0][0]
             rght = array[1][0]
             tmp_tree = HaffmanTree(val, lft, rght)
-            insert_tree(array, val, tmp_tree)
-            delete_counted(array)
+            insert_tree_(array, val, tmp_tree)
+            delete_counted_(array)
 
         fill_the_tree(array)
 
         return array[0]
 
-    # fill_the_tree(letter_mult)
-    # print(array)
+    def print_tree(tr_ee):
 
-    # return fill_the_tree(letter_mult).left.left.left
-    # return fill_the_tree(letter_mult)[0].value
-    # return fill_the_tree(letter_mult)[0].left.right.left.left
-    # return fill_the_tree(letter_mult)[0].right
+        if type(tr_ee.right) == str and type(tr_ee.left) == str:
+            print(f'  {tr_ee.value}\n  /\\\n{tr_ee.left}\t{tr_ee.right}')
+            return
 
-    # def count_letter_from_tree(t_tree):
-    #
-    #     if t_tree:
-    #
-    #         if type(t_tree) == str:
-    #             letter_dict[t_tree] = letter_code.copy()
-    #             # t_tree = None
-    #             letter_code.pop()
-    #             return  # t_tree
-    #
-    #         if t_tree.left:
-    #             letter_code.append('0')
-    #             count_letter_from_tree(t_tree.left)
-    #
-    #         if t_tree.right:
-    #             letter_code.append('1')
-    #             count_letter_from_tree(t_tree.right)
-    #
-    #     return letter_dict  # , t_tree
+        if type(tr_ee.right) == HaffmanTree and type(tr_ee.left) == HaffmanTree:
+            print_tree(tr_ee.left)
+            print_tree(tr_ee.right)
 
-    def go_tree(t_tree):
+        if type(tr_ee.left) == HaffmanTree and type(tr_ee.right) == str:
+            print(f'  {tr_ee.value}\n  /\\\n{tr_ee.left.value}\t{tr_ee.right}')
+            return print_tree(tr_ee.left)
 
-        def del_known_from_tree(tre, pos):
-            for i in pos:
-                if i == '0':
-                    tmp = tre.left
-                if i == '1':
-                    tmp = tre.right
-            tmp = None
-            print(tre.left.right.left.right)
+        if type(tr_ee.right) == HaffmanTree and type(tr_ee.left) == str:
+            print(f'  {tr_ee.value}\n  /\\\n{tr_ee.left}\t{tr_ee.right.value}')
+            return print_tree(tr_ee.right)
 
-        save_tree = t_tree
-        while type(t_tree) == HaffmanTree:
+    def count_letter_from_tree(t_tree):
+
+        if t_tree:
+
+            if type(t_tree) == str or type(t_tree) == list:
+                letter_dict[t_tree] = letter_code.copy()
+                letter_code.pop()
+                return
+
             if t_tree.left:
                 letter_code.append('0')
-                t_tree = t_tree.left
+                count_letter_from_tree(t_tree.left)
+
             if t_tree.right:
                 letter_code.append('1')
-                t_tree = t_tree.right
+                count_letter_from_tree(t_tree.right)
+                if letter_code:
+                    letter_code.pop()
 
-        letter_dict[t_tree] = letter_code
-        del_known_from_tree(save_tree, letter_code)
         return letter_dict
 
-
     letter_dict = {}
-    # final_let_dict = []
     letter_code = []
-    go_tree(fill_the_tree(letter_mult))
-    # counted_tree = fill_the_tree(letter_mult)
+    counted_tree = fill_the_tree(letter_mult)
+    # print(counted_tree.right.right.right)
+    # print(counted_tree.value)
+    # print_tree(counted_tree)
+    final_let_dict = count_letter_from_tree(counted_tree)
 
-    # tmp_dict = count_letter_from_tree(fill_the_tree(letter_mult))
-    # final_let_dict = count_letter_from_tree(fill_the_tree(letter_mult))
-    # final_let_dict.append(tmp_dict)
-
-    print(len(final_let_dict))
+    print(f'Длина финального массива:\t\t\t\t {len(final_let_dict)}')
+    print(f'Финальный массив:\n{final_let_dict}')
     return final_let_dict
 
 
-    # count_letter_from_tree(fill_the_tree(letter_mult))
+def print_result(raw_dict, init_string):
+    rez_string = ''
+    for i in init_string:
+        rez_string += ''.join(raw_dict[i])
+
+    return print(f'Исходная строка:\t\t{init_string}\nЗакодированная строка:\t{rez_string}')
 
 
-print(haffman(inp_string))
+rez = haffman(inp_string)
+print_result(rez, inp_string)
