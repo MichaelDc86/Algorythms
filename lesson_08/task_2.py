@@ -2,8 +2,9 @@
 
 from collections import Counter
 
-inp_string = 'Haffman Algorithm'
+# inp_string = 'Haffman Algorithm'
 # inp_string = 'aaaaaafqqwertyuiop'
+inp_string = 'aaaaaafqwertyuiop'
 
 
 class HaffmanTree:
@@ -29,12 +30,12 @@ def haffman(string):
             ins = False
             for j in range(len(arr)):
                 if type(arr[j]) == HaffmanTree:
-                    if arr[j].value == vl:
+                    if arr[j].value >= vl:
                         arr.insert(j, tr)
                         ins = True
                         break
                 else:
-                    if arr[j][1] == vl:
+                    if arr[j][1] >= vl:
                         arr.insert(j, tr)
                         ins = True
                         break
@@ -140,9 +141,11 @@ def haffman(string):
 def print_result(raw_dict, init_string):
     rez_string = ''
     for i in init_string:
-        rez_string += ''.join(raw_dict[i])
+        rez_string += ''.join(raw_dict[i]) + ' '
+    bytes_string = ' '.join(format(ord(x), 'b') for x in init_string)
 
-    return print(f'Исходная строка:\t\t{init_string}\nЗакодированная строка:\t{rez_string}')
+    return print(f'Исходная строка:\t\t{init_string}\nЗакодированная строка:\t{rez_string}'
+                 f'\nИсходная бинарная строка:\n{bytes_string}')
 
 
 rez = haffman(inp_string)
